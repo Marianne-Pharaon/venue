@@ -1,22 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
+// const multer = require('multer');
+// const upload = multer({ storage: multer.memoryStorage() });
+
 const {
   getAll,
   getByID,
-  login,
-  register,
+  addVenue,
   updateByID,
-  switchToAdmin,
   deleteByID,
-} = require('../controllers/userController');
+} = require('../controllers/venueController');
 
 router.get('/getAll', getAll);
 router.get('/getByID/:ID', getByID);
-router.post('/login', login);
-router.post('/register', register);
-router.put('/update/:ID', updateByID);
-// router.put('/switchToAdmin/:ID', switchToAdmin);
+router.post('/add',  addVenue);
+router.put('/update/:ID',  updateByID);
 router.delete('/delete/:ID', deleteByID);
 
 module.exports = router;

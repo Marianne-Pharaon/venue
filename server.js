@@ -3,20 +3,27 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const PORT = process.env.PORT;
 
 
 require("./config/db");
-const ReservationsRoutes = require("./routes/ReservationsRoute");
-const userRoutes = require("./routes/userRoute");
+const userRoute = require('./routes/userRoute');
+const venueRoute = require('./routes/venueRoute');
+const eventRoute = require('./routes/eventRoute');
+const ReservationsRoute = require('./routes/ReservationsRoute');
 
-app.use(bodyParser.json());
+
+
+
+
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.use("/reservation", ReservationsRoutes);
-app.use('/user', userRoutes);
+app.use('/user', userRoute);
+app.use('/venue', venueRoute);
+app.use('/event', eventRoute);
+app.use('/reservation', ReservationsRoute);
 
-const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

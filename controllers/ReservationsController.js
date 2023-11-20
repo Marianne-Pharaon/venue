@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const connection = require("../config/db");
 
 const getAllReservationByUserId = async (req, res) => {
   try {
