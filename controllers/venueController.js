@@ -1,5 +1,5 @@
 const connection = require("../config/db");
-
+const cloudinary= require("../config/cloudinary");
 
 
 const getAll = async (req, res) => {
@@ -39,15 +39,20 @@ const getAll = async (req, res) => {
   };
   
   const addVenue = async (req, res) => {
-    const { name, description, capacity, address } = req.body;
+    const { name, description, capacity, image, address } = req.body;
     const query = `INSERT INTO venues (name, description, capacity, image, address) VALUES (?, ?, ?, ?, ?);`;
     try {
-    //   const imageURL = await imageUploader(req.file);
+      const result = await cloudinary.uploader.upload(image, {folder:venue, width:300});
       const [response] = await connection.query(query, [
         name,
         description,
         capacity,
-        // imageURL,
+        image = {
+            public_id: result.public_id,
+            url: result.secure_url
+          },
+          
+        
         address,
       ]);
 
@@ -66,19 +71,18 @@ const getAll = async (req, res) => {
     const { ID } = req.params;
     const { name, description, capacity, image, address } = req.body;
     const query = `UPDATE venues SET name = ?, description = ?, capacity = ?, image = ?, address = ? WHERE ID = ?;`;
-    // let imageURL = '';
     try {
-    //   if (req.file) {
-    //     imageURL = await imageUploader(req.file);
-    //   } else {
-    //     imageURL = image;
-    //   }
-    //   console.log(imageURL);
+        const result = await cloudinary.uploader.upload(image, {folder:venue, width:300});
+
       const [response] = await connection.query(query, [
         name,
         description,
         capacity,
-        // imageURL,
+         image = {
+            public_id: result.public_id,
+            url: result.secure_url
+          },
+          
         address,
         ID,
       ]);
